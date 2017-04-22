@@ -1,29 +1,24 @@
-from django.shortcuts import render
-from  django.http import HttpResponse
-# Create your views here.
-from django.views.decorators.csrf import csrf_exempt
-import tensorflow as tf
-import templates.WebApp
-
-import keras
-import numpy as np
-import cv2
-from PIL import Image
-from io import StringIO
 import base64
 from binascii import a2b_base64
+
+import cv2
+import keras
+import numpy as np
+import tensorflow as tf
+from  django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
 
 #load pretrained model
 
 def data_uri_to_cv2_img(uri):
         encoded_data = uri.split(',')[1]
-        # print("č")
         # img = base64.b64decode(uri)
         # nparr = np.fromstring(img, np.uint8)
         # img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)  # cv2.IMREAD_COLOR in OpenCV 3.1
         data = encoded_data
         binary_data = a2b_base64(data)
-
         fd = open('imagelol.png', 'wb')
         fd.write(binary_data)
         fd.close()
@@ -88,9 +83,7 @@ def predict(data):
             pt1 = int(rect[1] + rect[3] // 2 - leng // 2)
             pt2 = int(rect[0] + rect[2] // 2 - leng // 2)
             roi = im_th[pt1:pt1 + leng, pt2:pt2 + leng]    # Make the rectangular region around the digit
-            # Resize the image
-           # roi = im_th[rect[1]:rect[1]+rect[3],rect[0]:rect[0]+rect[2]]
-           # currim = im[y:y + h, x:x + w]
+
             print(roi.shape)
             x,y= roi.shape
             #if( x>= 28 & y>= 28):
@@ -99,7 +92,7 @@ def predict(data):
 
             #predict rectangle
             nbr = cnn_predict(roi)
-            cv2.putText(im, str(int(nbr[0])), (rect[0], rect[1]),cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 3)
+            cv2.putText(im, str(int(nbr[0])), (rect[0], rect[1]), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 144, 30), 3)
 
         cv2.imwrite("hello.png",im)
         with open("hello.png", "rb") as image_file:
@@ -125,9 +118,4 @@ def classify(request):
 
 
     return HttpResponse(classifiedData)
-
-
-
-
-
 

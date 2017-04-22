@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome to Digit Classifier</title>
-<script
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
@@ -144,10 +148,12 @@
         }
     }
     </script>
-<input type="button" value="save" id="btn" size="30" onclick="save()" >
-<input type="button" value="clear" id="clr" size="23" onclick="erase()" >
+<input type="button" value="s" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" id="btn" size="15"
+       onclick="save()">
+<input type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" value="c" id="clr" size="15"
+       onclick="erase()">
 
-<img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
+<img id="canvasimg" style="display:none;">
 
 </body>
 </html>
