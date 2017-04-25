@@ -1,10 +1,9 @@
+from binascii import a2b_base64
+
+import cv2
 import keras
 import numpy as np
-import cv2
 from PIL import Image
-from io import StringIO
-import base64
-from binascii import a2b_base64
 
 #load pretrained model
 model = keras.models.load_model("mnist_cnn_model.h5")
@@ -31,7 +30,6 @@ def add_border_to_image(im):
     border = cv2.copyMakeBorder(im, top=bordersize, bottom=bordersize, left=bordersize, right=bordersize,
                                 borderType=cv2.BORDER_CONSTANT, value=WHITE)
     return border
-
 
 
 def cnn_predict(im):

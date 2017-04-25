@@ -3,18 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome to Digit Classifier</title>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <!-- Material Design icon font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
     <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
 </head>
-<body  onload="init()">
+<body onload="init()">
+<style>
+    .diver {
+        float: left;
+        display: inline;
+        margin: 15px;
+        width: 30%;
 
-<canvas id="myCanvas" width="500" height="500" style="border:2px solid black"></canvas>
+    }
+
+    .myCanvas {
+        float: left;
+        display: inline;
+
+        border: 2px solid black
+    }
+
+    .buttons {
+        float: left;
+        display: inline;
+        width: 30%;
+    }
+
+    .canvasimg {
+        float: left;
+        display: inline;
+        border: 2px solid black
+    }
+
+    .p2 {
+        float: right;
+        display: inline;
+        width: 30%;
+    }
+
+</style>
+
 <script type="text/javascript">
     var canvas, ctx, flag = false,
         prevX = 0,
@@ -29,10 +67,10 @@
     function init() {
         canvas = document.getElementById('myCanvas');
         ctx = canvas.getContext("2d");
-        ctx.fillStyle="#FFFFFF";
+        ctx.fillStyle = "#FFFFFF";
         w = canvas.width;
         h = canvas.height;
-        ctx.fillRect(0,0,w,h);
+        ctx.fillRect(0, 0, w, h);
         canvas.addEventListener("mousemove", function (e) {
             findxy('move', e)
         }, false);
@@ -87,34 +125,55 @@
     }
 
     function erase() {
-        var m = confirm("Want to clear");
-        if (m) {
-            ctx.fillStyle="#FFFFFF"
-            ctx.fillRect(0, 0, w, h);
-            document.getElementById("canvasimg").style.display = "none";
-        }
+
+        ctx.fillStyle = "#FFFFFF"
+        ctx.fillRect(0, 0, w, h);
+        document.getElementById("divResult").style.display = "none";
+
     }
 
     function loadedImage(data) {
+        document.getElementById("divResult").style.display = "block";
+        document.getElementById("canvasimg").style.border = "2px solid";
         document.getElementById("canvasimg").src = data;
         document.getElementById("canvasimg").style.display = "inline";
+        document.getElementById("loadingSpinner").style.display = "none";
     }
 
     function save() {
         document.getElementById("canvasimg").style.border = "2px solid";
         var dataURL = canvas.toDataURL();
         console.log(dataURL);
-{#        document.getElementById("canvasimg").src = dataURL;#}
-{#        document.getElementById("canvasimg").style.display = "inline";#}
-
+        {#        document.getElementById("canvasimg").src = dataURL;#}
+        {#        document.getElementById("canvasimg").style.display = "inline";#}
+        document.getElementById("loadingSpinner").style.display = "block";
         $.ajax({
-             type: "POST",
+            type: "POST",
             url: "classify/",
-            data: {"data":dataURL},
+            data: {"data": dataURL},
             success: loadedImage,
             //dataType: string
-});
+        });
 
+    }
+
+    function load() {
+        var src = document.getElementById("src");
+        var fr = new FileReader();
+        fr.onload = function (e) {
+            erase();
+            dataURL = this.result;
+            $.ajax({
+                type: "POST",
+                url: "classify/",
+                data: {"data": dataURL},
+                success: loadedImage,
+            });
+            document.getElementById("loadingSpinner").style.display = "block";
+        };
+        src.addEventListener("change", function () {
+            fr.readAsDataURL(src.files[0]);
+        });
     }
 
     function findxy(res, e) {
@@ -122,7 +181,7 @@
             prevX = currX;
             prevY = currY;
             currX = e.clientX - canvas.offsetLeft;
-            currY = e.clientY - canvas.offsetTop;
+            currY = e.clientY - canvas.offsetTop - 64;
 
             flag = true;
             dot_flag = true;
@@ -142,18 +201,86 @@
                 prevX = currX;
                 prevY = currY;
                 currX = e.clientX - canvas.offsetLeft;
-                currY = e.clientY - canvas.offsetTop;
+                currY = e.clientY - canvas.offsetTop - 64;
                 draw();
             }
         }
     }
-    </script>
-<input type="button" value="s" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" id="btn" size="15"
-       onclick="save()">
-<input type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" value="c" id="clr" size="15"
-       onclick="erase()">
+</script>
 
-<img id="canvasimg" style="display:none;">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header style="height: 64px;" class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">Digit Recognizer</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+            <nav class="mdl-navigation mdl-layout--large-screen-only">
+                <a class="mdl-navigation__link" href="/about">About</a>
+
+            </nav>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div>
+                <div class="diver">
+
+             <span class="mdl-chip">
+             <span class="mdl-chip__text">Draw digits bellow:</span>
+                </span>
+
+                    <canvas id="myCanvas" width="500" height="500" class="myCanvas"></canvas>
+                </div>
+                <div style="padding: 1%;padding-top: 5%" id="buttons" class="buttons">
+                    <input type="button" value="s" class="hidden" id="btn" size="15"
+                           onclick="save()">
+                    <label style="margin: 1%" id="btnMaterial" for="btn"
+                           class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                        <i class="material-icons">search</i>
+                    </label>
+
+                    <div class="mdl-tooltip mdl-tooltip--large" for="btnMaterial">
+                        Classify
+                    </div>
+
+                    <br>
+
+                    <input type="file" class="hidden" id="src" onclick="load()">
+                    <label style="margin: 1%" id="srcMaterial" for="src"
+                           class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                        <i class="material-icons">file_upload</i>
+                    </label>
+                    <div class="mdl-tooltip mdl-tooltip--large" for="srcMaterial">
+                        Classify image from my file
+                    </div>
+
+                    <br>
+                    <input type="button" class="hidden" value="c" id="clr" size="15"
+                           onclick="erase()">
+                    <label style="margin: 1%" id="clrMaterial" for="clr"
+                           class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                        <i class="material-icons">clear</i>
+                    </label>
+                    <div class="mdl-tooltip mdl-tooltip--large" for="clrMaterial">
+                        Clear drawing area
+                    </div>
+                    <br>
+                    <div style="display:none; padding: 1%; margin-left: 1%" id="loadingSpinner"
+                         class="mdl-spinner mdl-js-spinner is-active"></div>
+                </div>
+                <div id="divResult" style="display: none" class="diver">
+                    <span class="mdl-chip">
+             <span class="mdl-chip__text">Result:</span>
+                </span>
+                    <img width="500" height="500" style="display: none" class="canvasimg" id="canvasimg">
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
 
 </body>
 </html>
