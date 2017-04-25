@@ -21,22 +21,21 @@
     .diver {
         float: left;
         display: inline;
-        margin: 15px;
-        width: 30%;
+        margin: 5px;
+        width: 40%;
 
     }
 
     .myCanvas {
         float: left;
         display: inline;
-
         border: 2px solid black
     }
 
     .buttons {
         float: left;
         display: inline;
-        width: 30%;
+        width: 10%;
     }
 
     .canvasimg {
@@ -231,10 +230,10 @@
              <span class="mdl-chip">
              <span class="mdl-chip__text">Draw digits bellow:</span>
                 </span>
-
+                    <br>
                     <canvas id="myCanvas" width="500" height="500" class="myCanvas"></canvas>
                 </div>
-                <div style="padding: 1%;padding-top: 5%" id="buttons" class="buttons">
+                <div style="padding-left:1%;padding-top: 5%" id="buttons" class="buttons">
                     <input type="button" value="s" class="hidden" id="btn" size="15"
                            onclick="save()">
                     <label style="margin: 1%" id="btnMaterial" for="btn"
@@ -275,7 +274,8 @@
                     <span class="mdl-chip">
              <span class="mdl-chip__text">Result:</span>
                 </span>
-                    <img width="500" height="500" style="display: none" class="canvasimg" id="canvasimg">
+                    <br>
+                    <img width="500" height="500" class="canvasimg" id="canvasimg">
                 </div>
             </div>
         </div>

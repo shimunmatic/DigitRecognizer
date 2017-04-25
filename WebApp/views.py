@@ -52,7 +52,7 @@ def predict(data):
         im = data_uri_to_cv2_img(data)
         print(datetime.datetime.now() - time)
         im = add_border_to_image(im)
-        im = cv2.resize(im,(500,500))
+        # im = cv2.resize(im,(500,500))
         # Convert to grayscale and apply Gaussian filtering
 
         # cv2.imwrite("base.png", im)
