@@ -205,6 +205,10 @@
             }
         }
     }
+
+    function about() {
+        window.location.href = "/about";
+    }
 </script>
 
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -216,7 +220,8 @@
             <div class="mdl-layout-spacer"></div>
             <!-- Navigation. We hide it in small screens. -->
             <nav class="mdl-navigation mdl-layout--large-screen-only">
-                <a class="mdl-navigation__link" href="/about">About</a>
+                <button style="color:white;" class="mdl-button mdl-js-button mdl-js-ripple-effect" onclick="about()"><b>About</b>
+                </button>
 
             </nav>
         </div>
@@ -275,7 +280,8 @@
              <span class="mdl-chip__text">Result:</span>
                 </span>
                     <br>
-                    <img width="500" height="500" class="canvasimg" id="canvasimg">
+                    <img style="max-width: 100%; height: auto;" width="500" height="500" class="canvasimg"
+                         id="canvasimg">
                 </div>
             </div>
         </div>
