@@ -13,17 +13,13 @@ from django.views.decorators.csrf import csrf_exempt
 #load pretrained model
 
 def data_uri_to_cv2_img(uri):
-        encoded_data = uri.split(',')[1]
-        # img = base64.b64decode(uri)
-        # nparr = np.fromstring(img, np.uint8)
-        # img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)  # cv2.IMREAD_COLOR in OpenCV 3.1
-        data = encoded_data
+        data = uri.split(',')[1]
         binary_data = a2b_base64(data)
-        fd = open('imagelol.png', 'wb')
+        fd = open('image_buff.png', 'wb')
         fd.write(binary_data)
         fd.close()
 
-        return cv2.imread('imagelol.png')
+        return cv2.imread('image_buff.png')
 
 def add_border_to_image(im):
     WHITE = [255,255,255]
@@ -35,7 +31,7 @@ def add_border_to_image(im):
 
 
 def cnn_predict(model, im):
-    # model = keras.models.load_model("/home/shimun/PycharmProjects/untitled/WebApp/mnist_cnn_model.h5")
+    # model = keras.models.load_model("/home/shimun/PycharmProjects/DigitRecognizer/WebApp/mnist_cnn_model.h5")
 
     im = cv2.resize(im,(28,28))
     im=im/255
@@ -46,7 +42,7 @@ def cnn_predict(model, im):
 def predict(data):
     # Read the input image
     with tf.Session() as sess:
-        model = keras.models.load_model("/home/shimun/PycharmProjects/untitled/WebApp/mnist_cnn_model.h5")
+        model = keras.models.load_model("/home/shimun/PycharmProjects/DigitRecognizer/WebApp/mnist_cnn_model.h5")
         import datetime
         time = datetime.datetime.now()
         im = data_uri_to_cv2_img(data)
@@ -54,8 +50,6 @@ def predict(data):
         im = add_border_to_image(im)
         # im = cv2.resize(im,(500,500))
         # Convert to grayscale and apply Gaussian filtering
-
-        # cv2.imwrite("base.png", im)
 
         im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
         im_gray = cv2.GaussianBlur(im_gray, (5, 5), 0)
@@ -93,7 +87,7 @@ def predict(data):
         with open("hello.png", "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
         print(datetime.datetime.now() - time)
-        return "data:image/png;base64,"+(encoded_string).decode('utf-8')
+        return "data:image/png;base64,"+encoded_string.decode('utf-8')
 
 
 
