@@ -31,7 +31,7 @@ def add_border_to_image(im):
 
 
 def cnn_predict(model, im):
-    # model = keras.models.load_model("/home/shimun/PycharmProjects/DigitRecognizer/WebApp/mnist_cnn_model.h5")
+    # model = keras.models.load_model("~/DigitRecognizer/DigitRecognizer/WebApp/mnist_cnn_model.h5")
 
     im = cv2.resize(im,(28,28))
     im=im/255
